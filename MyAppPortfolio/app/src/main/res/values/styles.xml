@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Buttons">
+        <item name = "android:width">250dp</item>
+        <item name = "android:height">50dp</item>
+        <item name = "android:layout_margin">5dp</item>
+        <item name="android:background">#0067E8</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="Buttons.Good">
+        <item name="android:background">#1787E8</item>
+        <item name="android:textColor">#7DF2FF</item>
+    </style>
+
+    <style name="Buttons.Capstone">
+        <item name="android:background">#E8160F</item>
+    </style>
+
+</resources>
