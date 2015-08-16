@@ -7,7 +7,8 @@
 
     <style name="Buttons">
         <item name = "android:width">250dp</item>
-        <item name = "android:height">50dp</item>
+        <item name = "android:height">0dp</item>
+        <item name = "android:layout_weight">1</item>
         <item name = "android:layout_margin">5dp</item>
         <item name="android:background">#0067E8</item>
         <item name="android:textColor">#FFFFFF</item>
