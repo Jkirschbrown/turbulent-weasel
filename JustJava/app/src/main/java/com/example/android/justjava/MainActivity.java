@@ -24,7 +24,7 @@ public class MainActivity extends ActionBarActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        String priceMessage = "Total: $" + quantity*5+"\nThank you!";
+        String priceMessage = createOrderSummary(calculatePrice());
         displayMessage(priceMessage);
     }
 
@@ -38,26 +38,37 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
-     * This method displays the given price on the screen.
+     * This method calculates price for an order.
      */
-    private void displayPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+    private int calculatePrice() {
+        int total = quantity*5;
+        return total;
+    }
+
+    private String createOrderSummary(int price) {
+        String output = "Name: Justin Kirschbrown\nQuantity: " + quantity + "\nTotal: $" + price + "\nThank you!";
+        return output;
     }
 
     /**
-     * This method displays the given text on the screen.
+     * This method displays the given text on the screen. Casts output of findViewById (View type) into TextView by (TextView)
      */
     private void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        orderSummaryTextView.setText(message);
     }
 
+    /**
+     * This method increments the quantity.
+     */
     public void increment(View view) {
         quantity = quantity+1;
         display(quantity);
     }
 
+    /**
+     * This method decrements the quantity.
+     */
     public void decrement(View view) {
         quantity = quantity-1;
         display(quantity);

@@ -3,6 +3,6 @@
 
     <string name="quantityStr">QUANTITY</string>
     <string name="Order">ORDER</string>
-    <string name="price">PRICE</string>
+    <string name="summary">ORDER SUMMARY</string>
     <string name="action_settings">Settings</string>
 </resources>
