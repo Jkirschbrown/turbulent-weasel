@@ -2,8 +2,12 @@ package com.example.android.justjava;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
@@ -24,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        String priceMessage = createOrderSummary(calculatePrice());
+        String priceMessage = createOrderSummary(calculatePrice(), getNameString(), getWhippedState(), getChocolateState());
         displayMessage(priceMessage);
     }
 
@@ -41,12 +45,38 @@ public class MainActivity extends ActionBarActivity {
      * This method calculates price for an order.
      */
     private int calculatePrice() {
-        int total = quantity*5;
+        int basePrice = 5;
+        if (getWhippedState()) {
+            basePrice = basePrice+1;
+        }
+        if (getChocolateState()) {
+            basePrice = basePrice+2;
+        }
+        int total = quantity*basePrice;
         return total;
     }
 
-    private String createOrderSummary(int price) {
-        String output = "Name: Justin Kirschbrown\nQuantity: " + quantity + "\nTotal: $" + price + "\nThank you!";
+    private boolean getWhippedState(){
+        CheckBox whipped = (CheckBox) findViewById(R.id.whippedCheck);
+        return whipped.isChecked();
+    }
+
+    private boolean getChocolateState() {
+        CheckBox chocolate = (CheckBox) findViewById(R.id.chocCheck);
+        return chocolate.isChecked();
+    }
+
+    private String getNameString() {
+        EditText nameBox = (EditText) findViewById(R.id.InputName);
+        return nameBox.getText().toString();
+    }
+
+    public void logCheckState(View view) {
+        Log.v("MainActivity", "Checkbox: " + getWhippedState());
+    }
+
+    private String createOrderSummary(int price, String inputName, boolean hasWhippedCream, boolean hasChocolate) {
+        String output = "Name: " + inputName + "\nAdd whipped cream? " + hasWhippedCream + "\nAdd chocolate? " + hasChocolate + "\nQuantity: " + quantity + "\nTotal: $" + price + "\nThank you!";
         return output;
     }
 
@@ -62,7 +92,12 @@ public class MainActivity extends ActionBarActivity {
      * This method increments the quantity.
      */
     public void increment(View view) {
-        quantity = quantity+1;
+        if (quantity < 100) {
+            quantity = quantity + 1;
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(),"I'm sorry, but I have to cut you off at 100 cups...", Toast.LENGTH_SHORT);
+            toast.show();
+        }
         display(quantity);
     }
 
@@ -70,7 +105,12 @@ public class MainActivity extends ActionBarActivity {
      * This method decrements the quantity.
      */
     public void decrement(View view) {
-        quantity = quantity-1;
+        if (quantity > 0) {
+            quantity = quantity - 1;
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(),"You can't order a negative number of coffees, friend!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
         display(quantity);
     }
 }
