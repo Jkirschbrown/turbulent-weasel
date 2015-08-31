@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -18,14 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/NameStr"
-            android:id="@+id/InputName"
-            android:layout_marginBottom="16dp"/>
+            android:id="@+id/InputName" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="TOPPINGS" />
+            style="@style/HeaderTextStyle"
+            android:text="@string/toppings" />
 
 
         <LinearLayout
@@ -44,14 +41,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Whipped Cream" />
+                android:text="@string/whippedCream" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:layout_height="wrap_content">
 
             <CheckBox
                 android:id="@+id/chocCheck"
@@ -64,14 +60,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chocolate" />
+                android:text="@string/chocolate" />
 
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            style="@style/HeaderTextStyle"
             android:text="@string/quantityStr" />
 
         <LinearLayout
@@ -104,24 +98,12 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/summary" />
-
-        <TextView
-            android:id="@+id/order_summary_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="" />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="submitOrder"
-            android:text="ORDER" />
+            android:textAllCaps="true"
+            android:text="@string/order" />
 
     </LinearLayout>
 

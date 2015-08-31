@@ -1,5 +1,7 @@
 package com.example.android.justjava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -29,7 +31,14 @@ public class MainActivity extends ActionBarActivity {
      */
     public void submitOrder(View view) {
         String priceMessage = createOrderSummary(calculatePrice(), getNameString(), getWhippedState(), getChocolateState());
-        displayMessage(priceMessage);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "JustJava order for " + getNameString());
+        intent.putExtra(Intent.EXTRA_TEXT, priceMessage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     /**
@@ -76,16 +85,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private String createOrderSummary(int price, String inputName, boolean hasWhippedCream, boolean hasChocolate) {
-        String output = "Name: " + inputName + "\nAdd whipped cream? " + hasWhippedCream + "\nAdd chocolate? " + hasChocolate + "\nQuantity: " + quantity + "\nTotal: $" + price + "\nThank you!";
-        return output;
-    }
-
-    /**
-     * This method displays the given text on the screen. Casts output of findViewById (View type) into TextView by (TextView)
-     */
-    private void displayMessage(String message) {
-        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
-        orderSummaryTextView.setText(message);
+        String priceMessage = "Name: " + inputName;
+        priceMessage += "\nAdd whipped cream? " + hasWhippedCream;
+        priceMessage += "\nAdd chocolate? " + hasChocolate;
+        priceMessage += "\nQuantity: " + quantity;
+        priceMessage += "\nTotal: $" + price;
+        priceMessage +="\n" + getString(R.string.thankYou);
+        return priceMessage;
     }
 
     /**
