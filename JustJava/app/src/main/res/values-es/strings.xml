@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quantityStr">Cantidad</string>
+    <string name="order">Pedido</string>
+    <string name="NameStr">Nombre</string>
+    <string name="chocolate">Chocolate</string>
+    <string name="whippedCream">Crema Batida</string>
+    <string name="toppings">Guarnición</string>
+    <string name="thankYou">Gracias!</string>
+</resources>
