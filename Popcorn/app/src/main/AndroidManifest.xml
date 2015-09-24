@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kirschbrown.popcorn" >
+    package="com.example.kirschbrown.popflix" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".Globals"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,6 +18,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MovieDetailActivity"
+            android:label="@string/title_activity_movie_detail"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kirschbrown.popflix.MainActivity" />
         </activity>
     </application>
 

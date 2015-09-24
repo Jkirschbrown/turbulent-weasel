@@ -1,4 +1,4 @@
-package com.example.kirschbrown.popcorn;
+package com.example.kirschbrown.popflix;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
