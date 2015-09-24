@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">PopCorn</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">PopFlix</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_movie_detail">Movie Details</string>
+    <string name="movieTitleString">Test</string>
+    <string name="releaseDate">Released</string>
+    <string name="rating">Rating</string>
+    <string name="votes">votes</string>
 </resources>

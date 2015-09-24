@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="sortChoices">
+        <item>Sort By: Most Popular</item>
+        <item>Sort By: Least Popular</item>
+        <item>Sort By: Highest Rated</item>
+        <item>Sort By: Lowest Rated</item>
+    </string-array>
+
+</resources>
