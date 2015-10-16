@@ -30,6 +30,13 @@ public class MovieDetailActivityFragment extends Fragment {
         //Inflate the rootView for reference
         rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
+        ImageView favorite = (ImageView) rootView.findViewById(R.id.favoriteButton);
+        /* TODO favorite.setOnClickListener(new ImageView.OnClickListener(){
+            public void OnClick(View view){
+            }
+        });
+        */
+
         if (intent!=null && intent.hasExtra("MovieItemObject")) {
             //Get the Movie Object
             MovieItemObject movieObject = intent.getExtras().getParcelable("MovieItemObject");
@@ -42,7 +49,10 @@ public class MovieDetailActivityFragment extends Fragment {
             TextView votesText = (TextView) rootView.findViewById(R.id.votesText);
             TextView plotText = (TextView) rootView.findViewById(R.id.plotText);
 
-            Picasso.with(rootView.getContext()).load(movieObject.getPosterURL()).into(moviePoster);
+            Picasso.with(rootView.getContext()).load(movieObject.getPosterURL())
+                    .placeholder(R.drawable.star_on) //TODO
+                    .error(R.drawable.star_on) //TODO
+                    .into(moviePoster);
             ratingText.setText(movieObject.getRating());
             titleText.setText(movieObject.getTitle());
             releaseDateText.setText(movieObject.getreleaseDate());

@@ -6,6 +6,7 @@
         <item>Sort By: Least Popular</item>
         <item>Sort By: Highest Rated</item>
         <item>Sort By: Lowest Rated</item>
+        <item>Favorites</item>
     </string-array>
 
 </resources>

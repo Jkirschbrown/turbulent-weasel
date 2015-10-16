@@ -14,6 +14,7 @@ public class MovieItemObject implements Parcelable{
     private String numVotes;
     private String releaseDate;
     private String posterURL;
+    private Boolean favorite = false;
 
     public MovieItemObject() {
 

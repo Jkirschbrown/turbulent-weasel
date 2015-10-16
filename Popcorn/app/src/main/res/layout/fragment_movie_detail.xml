@@ -79,6 +79,12 @@
                     android:id="@+id/votesText"
                     />
 
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/favoriteButton"
+                    android:src="@drawable/star_off"/>
+
             </LinearLayout>
 
         </LinearLayout>

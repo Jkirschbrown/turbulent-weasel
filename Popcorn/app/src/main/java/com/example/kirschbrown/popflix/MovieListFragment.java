@@ -253,6 +253,7 @@ public class MovieListFragment extends Fragment {
             final String TMDB_RELEASE_DATE = "release_date";
             final String TMDB_NUM_VOTES = "vote_count";
             final String TMDB_POSTER = "poster_path";
+            //TODO final String TMDB_ID = "???"
             String imageSize = "w342";
 
             JSONObject movieJson = new JSONObject(movieJsonStr);
@@ -271,6 +272,7 @@ public class MovieListFragment extends Fragment {
                 String releaseDate;
                 String numVotes;
                 String posterURL;
+                String movieID;
 
                 JSONObject movieObject = movieArray.getJSONObject(i);
                 title = movieObject.getString(TMDB_TITLE);
