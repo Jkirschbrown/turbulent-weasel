@@ -1,9 +1,12 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">PopFlix</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_movie_detail">Movie Details</string>
-    <string name="movieTitleString">Test</string>
     <string name="releaseDate">Released</string>
     <string name="rating">Rating</string>
-    <string name="votes">votes</string>
+    <string name="favorite">Favorite</string>
+
+    <string name="format_rating"><xliff:g id="rating">%1.1f</xliff:g>/10</string>
+    <string name="format_popularity"><xliff:g id="popularity">%1.2f</xliff:g></string>
+    <string name="format_numVotes">(<xliff:g id="numVotes">%1.0f</xliff:g> votes)</string>
 </resources>
