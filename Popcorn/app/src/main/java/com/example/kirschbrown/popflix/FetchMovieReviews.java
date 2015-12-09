@@ -10,8 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.kirschbrown.popflix.data.MovieContract;
-import com.example.kirschbrown.popflix.data.MovieContract.TrailersEntry;
+import com.example.kirschbrown.popflix.data.MovieContract.ReviewsEntry;
 
 
 import java.io.BufferedReader;
@@ -25,20 +24,20 @@ import java.util.Vector;
 /**
  * Created by jrkirsch on 11/19/2015.
  */
-public class FetchMovieTrailers extends AsyncTask<Long, Void, Void>{
+public class FetchMovieReviews extends AsyncTask<Long, Void, Void>{
 
-    private final String LOG_TAG = FetchMovieTrailers.class.getSimpleName();
+    private final String LOG_TAG = FetchMovieReviews.class.getSimpleName();
     private final Context mContext;
 
-    public FetchMovieTrailers(Context context) {
+    public FetchMovieReviews(Context context) {
         mContext = context;
     }
 
     protected Void doInBackground(Long... movieID) {
 
         String[] selectionArgs = new String[]{Long.toString(0)};
-        String selection = TrailersEntry.TABLE_NAME + "." + TrailersEntry.COLUMN_TRAILER_FAVORITE + " = ? ";
-        int deleted = mContext.getContentResolver().delete(TrailersEntry.CONTENT_URI, selection, selectionArgs);
+        String selection = ReviewsEntry.TABLE_NAME + "." + ReviewsEntry.COLUMN_REVIEW_FAVORITE + " = ? ";
+        int deleted = mContext.getContentResolver().delete(ReviewsEntry.CONTENT_URI, selection, selectionArgs);
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -46,7 +45,7 @@ public class FetchMovieTrailers extends AsyncTask<Long, Void, Void>{
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
-        String trailersJsonStr = null;
+        String reviewsJsonStr = null;
 
         try {
             final String BASE_URL = "http://api.themoviedb.org/3/movie";
@@ -55,7 +54,7 @@ public class FetchMovieTrailers extends AsyncTask<Long, Void, Void>{
             //Build URI
             Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                     .appendPath(Long.toString(movieID[0]))
-                    .appendPath("videos")
+                    .appendPath("reviews")
                     .appendQueryParameter(API_PARAM, BuildConfig.TMDB_API_KEY)
                     .build();
             String myUri = builtUri.toString();
@@ -75,7 +74,7 @@ public class FetchMovieTrailers extends AsyncTask<Long, Void, Void>{
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
-                trailersJsonStr = null;
+                reviewsJsonStr = null;
             }
 
             //Create reader object for buffering inputStream
@@ -89,10 +88,10 @@ public class FetchMovieTrailers extends AsyncTask<Long, Void, Void>{
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
-                trailersJsonStr = null;
+                reviewsJsonStr = null;
             }
-            trailersJsonStr = buffer.toString();
-            getTrailerDataFromJsonString(trailersJsonStr);
+            reviewsJsonStr = buffer.toString();
+            getReviewsDataFromJsonString(reviewsJsonStr);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,14 +113,13 @@ public class FetchMovieTrailers extends AsyncTask<Long, Void, Void>{
         return null;
     }
 
-    private void getTrailerDataFromJsonString(String movieJsonStr) throws JSONException{
+    private void getReviewsDataFromJsonString(String movieJsonStr) throws JSONException{
         //Defining JSON query terms for TMDB
         final String TMDB_RESULT = "results";
         final String TMDB_ID = "id";
-        final String TMDB_TRAILER_ID = "id";
-        final String TMDB_TRAILER_NAME = "name";
-        final String TMDB_TRAILER_KEY = "key";
-        final String TMDB_TRAILER_SITE = "site";
+        final String TMDB_REVIEW_ID = "id";
+        final String TMDB_REVIEW_AUTHOR = "author";
+        final String TMDB_REVIEW_CONTENT = "content";
 
         try {
             JSONObject movieJson = new JSONObject(movieJsonStr);
@@ -132,38 +130,30 @@ public class FetchMovieTrailers extends AsyncTask<Long, Void, Void>{
             Vector<ContentValues> cVVector = new Vector<ContentValues>(movieArray.length());
 
             for (int i = 0; i < movieArray.length(); i++) {
-                String trailerID;
-                String trailerName;
-                String trailerKey;
-                String trailerURL;
-                String trailerSite;
+                String reviewID;
+                String reviewAuthor;
+                String reviewContent;
 
                 JSONObject movieObject = movieArray.getJSONObject(i);
-                trailerSite = movieObject.getString(TMDB_TRAILER_SITE);
-                trailerID = movieObject.getString(TMDB_TRAILER_ID);
-                trailerName = movieObject.getString(TMDB_TRAILER_NAME);
-                trailerKey = movieObject.getString(TMDB_TRAILER_KEY);
+                reviewID = movieObject.getString(TMDB_REVIEW_ID);
+                reviewAuthor = movieObject.getString(TMDB_REVIEW_AUTHOR);
+                reviewContent = movieObject.getString(TMDB_REVIEW_CONTENT);
 
-                if (trailerSite.equals("YouTube")) {
-                    trailerURL = "http://www.youtube.com/watch?v=" + trailerKey;
+                ContentValues trailerValues = new ContentValues();
+                trailerValues.put(ReviewsEntry.COLUMN_MOVIE_ID, movieID);
+                trailerValues.put(ReviewsEntry.COLUMN_REVIEW_ID, reviewID);
+                trailerValues.put(ReviewsEntry.COLUMN_REVIEW_AUTHOR, reviewAuthor);
+                trailerValues.put(ReviewsEntry.COLUMN_REVIEW_CONTENT, reviewContent);
+                trailerValues.put(ReviewsEntry.COLUMN_REVIEW_FAVORITE, isFavorite);
 
-                    ContentValues trailerValues = new ContentValues();
-                    trailerValues.put(TrailersEntry.COLUMN_MOVIE_ID, movieID);
-                    trailerValues.put(TrailersEntry.COLUMN_TRAILER_ID, trailerID);
-                    trailerValues.put(TrailersEntry.COLUMN_TRAILER_NAME, trailerName);
-                    trailerValues.put(TrailersEntry.COLUMN_TRAILER_URL, trailerURL);
-                    trailerValues.put(TrailersEntry.COLUMN_TRAILER_FAVORITE, isFavorite);
-
-                    cVVector.add(trailerValues);
-                }
+                cVVector.add(trailerValues);
             }
-
             int inserted = 0;
             //add to database
             if (cVVector.size() > 0) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(TrailersEntry.CONTENT_URI, cvArray);
+                inserted = mContext.getContentResolver().bulkInsert(ReviewsEntry.CONTENT_URI, cvArray);
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);

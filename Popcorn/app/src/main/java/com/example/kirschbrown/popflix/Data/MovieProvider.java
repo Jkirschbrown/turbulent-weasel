@@ -6,6 +6,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Created by jrkirsch on 11/8/2015.
@@ -71,8 +72,8 @@ public class MovieProvider extends ContentProvider {
         matcher.addURI(authority, MovieContract.PATH_REVIEWS, REVIEWS);
         matcher.addURI(authority, MovieContract.PATH_REVIEWS + "/#", REVIEWS_WITH_ID);
 
-        matcher.addURI(authority, MovieContract.PATH_FAVORITES, TRAILERS);
-        matcher.addURI(authority, MovieContract.PATH_FAVORITES + "/#", TRAILERS_WITH_ID);
+        matcher.addURI(authority, MovieContract.PATH_TRAILERS, TRAILERS);
+        matcher.addURI(authority, MovieContract.PATH_TRAILERS + "/#", TRAILERS_WITH_ID);
         return matcher;
     }
 
@@ -231,6 +232,14 @@ public class MovieProvider extends ContentProvider {
                 rowsDeleted = db.delete(
                         MovieContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case TRAILERS:
+                rowsDeleted = db.delete(
+                        MovieContract.TrailersEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case REVIEWS:
+                rowsDeleted = db.delete(
+                        MovieContract.ReviewsEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             case FAVORITES_WITH_ID:
                 long movieId = MovieContract.FavoriteEntry.getFavoriteIdFromUri(uri);
                 selectionArgs = new String[]{Long.toString(movieId)};
@@ -244,10 +253,10 @@ public class MovieProvider extends ContentProvider {
                 rowsDeleted = db.delete(MovieContract.TrailersEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case REVIEWS_WITH_ID:
-                movieId = MovieContract.TrailersEntry.getTrailerIdFromUri(uri);
+                movieId = MovieContract.ReviewsEntry.getReviewIdFromUri(uri);
                 selectionArgs = new String[]{Long.toString(movieId)};
-                selection = sTrailersIdSelectionSetting;
-                rowsDeleted = db.delete(MovieContract.TrailersEntry.TABLE_NAME, selection, selectionArgs);
+                selection = sReviewsIdSelectionSetting;
+                rowsDeleted = db.delete(MovieContract.ReviewsEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -287,10 +296,10 @@ public class MovieProvider extends ContentProvider {
                 rowsUpdated = db.update(MovieContract.TrailersEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             case REVIEWS_WITH_ID:
-                movieId = MovieContract.TrailersEntry.getTrailerIdFromUri(uri);
+                movieId = MovieContract.ReviewsEntry.getReviewIdFromUri(uri);
                 selectionArgs = new String[]{Long.toString(movieId)};
                 selection = sTrailersIdSelectionSetting;
-                rowsUpdated = db.update(MovieContract.TrailersEntry.TABLE_NAME, values, selection, selectionArgs);
+                rowsUpdated = db.update(MovieContract.ReviewsEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -350,7 +359,6 @@ public class MovieProvider extends ContentProvider {
                 );
                 break;
             }
-
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

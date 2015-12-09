@@ -19,6 +19,14 @@
         <item name="android:layout_marginTop">-4dp</item>
     </style>
 
+    <style name="expanded">
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="compressed">
+        <item name="android:layout_height">160dp</item>
+    </style>
+
     <style name="movieDetail" parent="Theme.AppCompat.Light">
 
     </style>

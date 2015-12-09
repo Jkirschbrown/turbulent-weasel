@@ -15,7 +15,7 @@ import com.example.kirschbrown.popflix.data.MovieContract.ReviewsEntry;
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
     static final String DATABASE_NAME = "movies.db";
 
@@ -55,14 +55,20 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_TRAILERS_TABLE = "CREATE TABLE " + TrailersEntry.TABLE_NAME + " (" +
                 TrailersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TrailersEntry.COLUMN_MOVIE_ID + " REAL NOT NULL, " +
+                TrailersEntry.COLUMN_TRAILER_ID + " TEXT NOT NULL, " +
                 TrailersEntry.COLUMN_TRAILER_NAME + " TEXT NOT NULL, " +
-                TrailersEntry.COLUMN_TRAILER_URL + " TEXT NOT NULL);";
+                TrailersEntry.COLUMN_TRAILER_URL + " TEXT NOT NULL, " +
+                TrailersEntry.COLUMN_TRAILER_FAVORITE + " INTEGER NOT NULL, " +
+                " UNIQUE (" + TrailersEntry.COLUMN_TRAILER_ID + ") ON CONFLICT REPLACE);";
 
         final String SQL_CREATE_REVIEWS_TABLE = "CREATE TABLE " + ReviewsEntry.TABLE_NAME + " (" +
                 ReviewsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 ReviewsEntry.COLUMN_MOVIE_ID + " REAL NOT NULL, " +
+                ReviewsEntry.COLUMN_REVIEW_ID + " TEXT NOT NULL, " +
                 ReviewsEntry.COLUMN_REVIEW_AUTHOR + " TEXT NOT NULL, " +
-                ReviewsEntry.COLUMN_REVIEW_CONTENT + " TEXT NOT NULL);";
+                ReviewsEntry.COLUMN_REVIEW_CONTENT + " TEXT NOT NULL, " +
+                ReviewsEntry.COLUMN_REVIEW_FAVORITE + " INTEGER NOT NULL, " +
+                " UNIQUE (" + ReviewsEntry.COLUMN_REVIEW_ID + ") ON CONFLICT REPLACE);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_FAVORITES_TABLE);

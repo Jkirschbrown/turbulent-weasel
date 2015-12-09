@@ -109,8 +109,10 @@ public class MovieContract {
 
         // The TMDB movie id
         public static final String COLUMN_MOVIE_ID = "movie_id";
+        public static final String COLUMN_TRAILER_ID = "trailer_id";
         public static final String COLUMN_TRAILER_NAME = "name";
         public static final String COLUMN_TRAILER_URL = "url";
+        public static final String COLUMN_TRAILER_FAVORITE = "favorite";
 
         public static Uri buildTrailersUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -136,8 +138,10 @@ public class MovieContract {
 
         // The TMDB movie id
         public static final String COLUMN_MOVIE_ID = "movie_id";
+        public static final String COLUMN_REVIEW_ID = "review_id";
         public static final String COLUMN_REVIEW_AUTHOR = "author";
         public static final String COLUMN_REVIEW_CONTENT = "content";
+        public static final String COLUMN_REVIEW_FAVORITE = "favorite";
 
         public static Uri buildReviewsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

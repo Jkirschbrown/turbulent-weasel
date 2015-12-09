@@ -38,20 +38,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, Long>{
         mContext = context;
     }
 
-    int checkForFavorite(long movieId) {
-        Cursor favoriteCursor = mContext.getContentResolver().query(
-                FavoriteEntry.buildFavoriteUri(movieId),
-                null, null, null, null);
-        int state;
-        if (favoriteCursor.moveToFirst()){
-            state = 1;
-        } else {
-            state = 0;
-        }
-        favoriteCursor.close();
-        return state;
-    }
-
     protected void onPostExecute(Long movieID) {
         ((MovieGridFragment.Callback) mContext).onLoadFinished(movieID);
     }
@@ -78,7 +64,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, Long>{
                     cVVector.toArray(cvArray);
                     inserted = mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI, cvArray);
                 }
-                Log.d(LOG_TAG, "FetchMovieTask Complete. " + inserted + " Inserted.");
             }
             favoritesCursor.close();
 
@@ -181,64 +166,65 @@ public class FetchMovieTask extends AsyncTask<String, Void, Long>{
         String imageSize = "w342";
         long firstMovieID = -1;
 
-        try {
-            JSONObject movieJson = new JSONObject(movieJsonStr);
-            JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULT);
-            //Movie data is returned in order of the sort parameter. Therefore, the query will
-            //define the order of the list, and I will return the list items in that order.
+        if (movieJsonStr != null) {
+            try {
+                JSONObject movieJson = new JSONObject(movieJsonStr);
+                JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULT);
+                //Movie data is returned in order of the sort parameter. Therefore, the query will
+                //define the order of the list, and I will return the list items in that order.
 
-            Vector<ContentValues> cVVector = new Vector<ContentValues>(movieArray.length());
+                Vector<ContentValues> cVVector = new Vector<ContentValues>(movieArray.length());
 
-            JSONObject firstMovieObject = movieArray.getJSONObject(0);
-            firstMovieID = firstMovieObject.getLong(TMDB_ID);
+                JSONObject firstMovieObject = movieArray.getJSONObject(0);
+                firstMovieID = firstMovieObject.getLong(TMDB_ID);
 
-            for (int i = 0; i < movieArray.length(); i++) {
-                String title;
-                String plot;
-                double rating;
-                double popularity;
-                String releaseDate;
-                double numVotes;
-                String posterURL;
-                long movieID;
+                for (int i = 0; i < movieArray.length(); i++) {
+                    String title;
+                    String plot;
+                    double rating;
+                    double popularity;
+                    String releaseDate;
+                    double numVotes;
+                    String posterURL;
+                    long movieID;
 
-                JSONObject movieObject = movieArray.getJSONObject(i);
-                movieID = movieObject.getLong(TMDB_ID);
-                title = movieObject.getString(TMDB_TITLE);
-                plot = movieObject.getString(TMDB_PLOT);
-                rating = movieObject.getDouble(TMDB_RATING);
-                popularity = movieObject.getDouble(TMDB_POPULARITY);
-                numVotes = movieObject.getDouble(TMDB_NUM_VOTES);
-                releaseDate = movieObject.getString(TMDB_RELEASE_DATE);
-                String poster = movieObject.getString(TMDB_POSTER);
-                posterURL = "http://image.tmdb.org/t/p/" + imageSize + poster;
-                ContentValues movieValues = new ContentValues();
+                    JSONObject movieObject = movieArray.getJSONObject(i);
+                    movieID = movieObject.getLong(TMDB_ID);
+                    title = movieObject.getString(TMDB_TITLE);
+                    plot = movieObject.getString(TMDB_PLOT);
+                    rating = movieObject.getDouble(TMDB_RATING);
+                    popularity = movieObject.getDouble(TMDB_POPULARITY);
+                    numVotes = movieObject.getDouble(TMDB_NUM_VOTES);
+                    releaseDate = movieObject.getString(TMDB_RELEASE_DATE);
+                    String poster = movieObject.getString(TMDB_POSTER);
+                    posterURL = "http://image.tmdb.org/t/p/" + imageSize + poster;
+                    ContentValues movieValues = new ContentValues();
 
-                movieValues.put(MovieEntry.COLUMN_MOVIE_ID, movieID);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_TITLE, title);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_PLOT, plot);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_RATING, rating);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_POPULARITY, popularity);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_NUM_VOTES, numVotes);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_RELEASE_DATE, releaseDate);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_POSTER, posterURL);
-                movieValues.put(MovieEntry.COLUMN_MOVIE_FAVORITE, checkForFavorite(movieID));
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_ID, movieID);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_TITLE, title);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_PLOT, plot);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_RATING, rating);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_POPULARITY, popularity);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_NUM_VOTES, numVotes);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_RELEASE_DATE, releaseDate);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_POSTER, posterURL);
+                    movieValues.put(MovieEntry.COLUMN_MOVIE_FAVORITE, Utilities.checkForFavorite(mContext, movieID));
 
-                cVVector.add(movieValues);
+                    cVVector.add(movieValues);
+                }
+
+                int inserted = 0;
+                //add to database
+                if (cVVector.size() > 0) {
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
+                    inserted = mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI, cvArray);
+                }
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
             }
-
-            int inserted = 0;
-            //add to database
-            if (cVVector.size() > 0) {
-                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                cVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(MovieEntry.CONTENT_URI, cvArray);
-            }
-            Log.d(LOG_TAG, "FetchMovieTask Complete. " + inserted + " Inserted.");
-
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
-            e.printStackTrace();
         }
         return firstMovieID;
     }

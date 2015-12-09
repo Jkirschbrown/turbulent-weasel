@@ -30,8 +30,6 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
 
     private static final int MOVIE_LOADER = 0;
 
-
-
     private static final String[] MOVIE_COLUMNS = {
             MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry._ID,
             MovieContract.MovieEntry.TABLE_NAME + "." + MovieContract.MovieEntry.COLUMN_MOVIE_ID,
@@ -136,10 +134,6 @@ public class MovieGridFragment extends Fragment implements LoaderManager.LoaderC
         }
         });
         return rootView;
-    }
-
-    void restartLoader() {
-        getLoaderManager().restartLoader(MOVIE_LOADER, null, this);
     }
 
     @Override

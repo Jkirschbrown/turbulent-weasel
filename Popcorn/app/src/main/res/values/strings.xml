@@ -5,6 +5,10 @@
     <string name="releaseDate">Released</string>
     <string name="rating">Rating</string>
     <string name="favorite">Favorite</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailers">Trailers</string>
+    <string name="playButton">Play Trailer</string>
+    <string name="showMore">Show Full Review…</string>
 
     <string name="format_rating"><xliff:g id="rating">%1.1f</xliff:g>/10</string>
     <string name="format_popularity"><xliff:g id="popularity">%1.2f</xliff:g></string>

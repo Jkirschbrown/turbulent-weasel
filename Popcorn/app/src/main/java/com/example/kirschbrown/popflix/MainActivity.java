@@ -17,8 +17,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
 
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
-    public static final String apiKey = "b7d4648e474d5a25d9ab25c884c9dc8c";
-
     private boolean mTwoPane;
 
     @Override
@@ -39,21 +37,11 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         } else {
             mTwoPane = false;
         }
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        int firstLoad = settings.getInt("firstLoad", 0);
-        if (firstLoad == 1) {
+        InitApp app = (InitApp) getApplicationContext();
+        if (app.isFirstRun) {
             updateMovies();
-            SharedPreferences.Editor setEdit = settings.edit();
-            setEdit.putInt("firstLoad", 0);
+            app.isFirstRun = false;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor setEdit = settings.edit();
-        setEdit.putInt("firstLoad", 1);
     }
 
     @Override
@@ -79,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
     }
 
     public void onItemSelected(Uri contentUri) {
+        long movieID = MovieContract.MovieEntry.getMovieIdFromUri(contentUri);
+        new FetchMovieReviews(this).execute(movieID);
+        new FetchMovieTrailers(this).execute(movieID);
         if (mTwoPane){
             Bundle args = new Bundle();
             args.putParcelable(MovieDetailFragment.DETAIL_URI, contentUri);
@@ -105,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
                 args.putParcelable(MovieDetailFragment.DETAIL_URI, contentUri);
 
                 fragment.setArguments(args);
-            } else {
             }
 
             getSupportFragmentManager().beginTransaction()
@@ -114,24 +104,9 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        MovieGridFragment mgf = (MovieGridFragment)getSupportFragmentManager().findFragmentById(R.id.Gridview_movies);
-//        if (null != mgf){
-//            mgf.restartLoader();
-//        }
-//        MovieDetailFragment mdf = (MovieDetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
-//        if (null != mdf) {
-//            mdf.restartLoader();
-//        }
-//    }
-
     public void onSpinnerItemSelected(String sortString) {
         int deleted = 0;
         deleted = getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, null, null);
-        Log.d("In onSpinnerSelected", deleted + "rows deleted.");
         updateMovies();
     }
 
@@ -145,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements MovieGridFragment
     }
 
     public void updateMovies() {
-        Log.d("updateMovies", " run");
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String sort = settings.getString("sortString", "");
         new FetchMovieTask(this).execute(sort);

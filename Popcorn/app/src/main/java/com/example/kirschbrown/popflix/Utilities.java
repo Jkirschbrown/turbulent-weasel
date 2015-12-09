@@ -92,6 +92,20 @@ public class Utilities {
         return outUri;
     }
 
+    public static int checkForFavorite(Context mContext, long movieId) {
+        Cursor favoriteCursor = mContext.getContentResolver().query(
+                MovieContract.FavoriteEntry.buildFavoriteUri(movieId),
+                null, null, null, null);
+        int state;
+        if (favoriteCursor.moveToFirst()){
+            state = 1;
+        } else {
+            state = 0;
+        }
+        favoriteCursor.close();
+        return state;
+    }
+
     public static void updateFavorite(Context context, long movieID, View v) {
 
         Cursor cursor = context.getContentResolver().query(MovieContract.FavoriteEntry.buildFavoriteUri(movieID), null, null, null, null);
