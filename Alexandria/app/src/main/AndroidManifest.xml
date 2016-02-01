@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="barcode,face" />
+            android:value="barcode" />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation"
@@ -32,6 +32,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".BarcodeCaptureActivity"
+            android:label="Read Barcode"
+            android:parentActivityName=".MainActivity" >
         </activity>
 
 

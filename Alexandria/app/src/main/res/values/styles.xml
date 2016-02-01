@@ -5,4 +5,21 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="BookTitle" parent="AppTheme">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:background">#b3e5fc</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
+    <style name="BookSubTitle" parent="AppTheme">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:background">#b3e5fc</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
 </resources>
