@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ShareActionProvider;
 
-import com.example.kirschbrown.popflix.data.MovieContract;
+import com.example.kirschbrown.popflix.Data.MovieContract;
 
 import java.io.File;
 

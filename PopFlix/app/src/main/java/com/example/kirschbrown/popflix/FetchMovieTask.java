@@ -9,10 +9,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.kirschbrown.popflix.data.MovieContract;
-import com.example.kirschbrown.popflix.data.MovieContract.MovieEntry;
-import com.example.kirschbrown.popflix.data.MovieContract.FavoriteEntry;
-import com.example.kirschbrown.popflix.data.MovieDbHelper;
+import com.example.kirschbrown.popflix.Data.MovieContract;
+import com.example.kirschbrown.popflix.Data.MovieContract.MovieEntry;
+import com.example.kirschbrown.popflix.Data.MovieContract.FavoriteEntry;
+import com.example.kirschbrown.popflix.Data.MovieDbHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;

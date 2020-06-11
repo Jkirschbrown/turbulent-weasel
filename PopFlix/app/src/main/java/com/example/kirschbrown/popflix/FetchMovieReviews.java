@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.kirschbrown.popflix.data.MovieContract.ReviewsEntry;
+import com.example.kirschbrown.popflix.Data.MovieContract.ReviewsEntry;
 
 
 import java.io.BufferedReader;
@@ -48,7 +48,7 @@ public class FetchMovieReviews extends AsyncTask<Long, Void, Void>{
         String reviewsJsonStr = null;
 
         try {
-            final String BASE_URL = "http://api.themoviedb.org/3/movie";
+            final String BASE_URL = "https://api.themoviedb.org/3/movie";
             final String API_PARAM = "api_key";
 
             //Build URI

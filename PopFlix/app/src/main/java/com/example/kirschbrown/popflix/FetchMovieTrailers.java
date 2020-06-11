@@ -10,8 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.kirschbrown.popflix.data.MovieContract;
-import com.example.kirschbrown.popflix.data.MovieContract.TrailersEntry;
+import com.example.kirschbrown.popflix.Data.MovieContract;
+import com.example.kirschbrown.popflix.Data.MovieContract.TrailersEntry;
 
 
 import java.io.BufferedReader;

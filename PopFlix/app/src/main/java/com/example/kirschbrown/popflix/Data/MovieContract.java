@@ -1,4 +1,4 @@
-package com.example.kirschbrown.popflix.data;
+package com.example.kirschbrown.popflix.Data;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
