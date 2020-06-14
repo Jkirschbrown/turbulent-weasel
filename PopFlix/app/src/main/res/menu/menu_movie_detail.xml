@@ -3,6 +3,6 @@
 
     <item android:id="@+id/menu_item_share"
         android:title="Share"
-        bwq:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        bwq:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
         bwq:showAsAction="ifRoom" />
 </menu>

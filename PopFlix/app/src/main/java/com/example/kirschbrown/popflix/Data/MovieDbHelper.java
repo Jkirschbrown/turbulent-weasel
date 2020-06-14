@@ -1,13 +1,13 @@
-package com.example.kirschbrown.popflix.data;
+package com.example.kirschbrown.popflix.Data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.kirschbrown.popflix.data.MovieContract.MovieEntry;
-import com.example.kirschbrown.popflix.data.MovieContract.FavoriteEntry;
-import com.example.kirschbrown.popflix.data.MovieContract.TrailersEntry;
-import com.example.kirschbrown.popflix.data.MovieContract.ReviewsEntry;
+import com.example.kirschbrown.popflix.Data.MovieContract.MovieEntry;
+import com.example.kirschbrown.popflix.Data.MovieContract.FavoriteEntry;
+import com.example.kirschbrown.popflix.Data.MovieContract.TrailersEntry;
+import com.example.kirschbrown.popflix.Data.MovieContract.ReviewsEntry;
 
 /**
  * Created by jrkirsch on 11/8/2015.

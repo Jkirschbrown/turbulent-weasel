@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
@@ -33,6 +37,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private final String EAN_CONTENT="eanContent";
     private static final String SCAN_FORMAT = "scanFormat";
     private static final String SCAN_CONTENTS = "scanContents";
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
     private String mScanFormat = "Format:";
     private String mScanContents = "Contents:";
@@ -69,12 +74,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
             @Override
             public void afterTextChanged(Editable s) {
-                String ean =s.toString();
+                String ean = s.toString();
                 //catch isbn10 numbers
-                if(ean.length()==10 && !ean.startsWith("978")){
-                    ean="978"+ean;
+                if (ean.length() == 10 && !ean.startsWith("978")) {
+                    ean = "978" + ean;
                 }
-                if(ean.length()<13){
+                if (ean.length() < 13) {
                     clearFields();
                     return;
                 }
@@ -96,6 +101,14 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
                 // are using an external app.
                 //when you're done, remove the toast below.
+                final int REQUEST_IMAGE_CAPTURE = 1;
+
+                Intent intent = new Intent(v.getContext(), BarcodeCaptureActivity.class);
+                intent.putExtra(it.jaschke.alexandria.BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(it.jaschke.alexandria.BarcodeCaptureActivity.UseFlash, false);
+
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
+
                 Context context = getActivity();
                 CharSequence text = "This button should let you scan a book for its barcode!";
                 int duration = Toast.LENGTH_SHORT;
@@ -153,6 +166,52 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 null,
                 null
         );
+    }
+
+//
+//    Called when an activity you launched exits, giving you the requestCode
+//    you started it with, the resultCode it returned, and any additional
+//    data from it.  The <var>resultCode</var> will be
+//    {@link #RESULT_CANCELED} if the activity explicitly returned that,
+//    didn't return any result, or crashed during its operation.
+//    <p/>
+//    <p>You will receive this call immediately before onResume() when your
+//    activity is re-starting.
+//    <p/>
+//
+//    @param requestCode The integer request code originally supplied to
+//                       startActivityForResult(), allowing you to identify who this
+//                       result came from.
+//    @param resultCode  The integer result code returned by the child activity
+//                       through its setResult().
+//    @param data        An Intent, which can return result data to the caller
+//                       (various data can be attached to Intent "extras").
+//    @see #startActivityForResult
+//    @see #createPendingResult
+//    @see #setResult(int)
+//
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                    Intent bookIntent = new Intent(getActivity(), BookService.class);
+                    bookIntent.putExtra(BookService.EAN, barcode.displayValue);
+                    bookIntent.setAction(BookService.FETCH_BOOK);
+                    getActivity().startService(bookIntent);
+                } else {
+                    Log.d(TAG, "No barcode captured, intent data is null");
+                }
+            } else {
+                Log.d(TAG, String.format(getString(R.string.barcode_error),
+                        CommonStatusCodes.getStatusCodeString(resultCode)));
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Popcorn.iml" filepath="$PROJECT_DIR$/Popcorn.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PopFlix.iml" filepath="$PROJECT_DIR$/PopFlix.iml" group="PopFlix" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="PopFlix/app" />
     </modules>
   </component>
 </project>

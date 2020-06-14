@@ -171,6 +171,9 @@ public class BookService extends IntentService {
             JSONObject bookInfo = ((JSONObject) bookArray.get(0)).getJSONObject(VOLUME_INFO);
 
             String title = bookInfo.getString(TITLE);
+            Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
+            messageIntent.putExtra(MainActivity.MESSAGE_KEY, "\"" + title + "\" added.");
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
 
             String subtitle = "";
             if(bookInfo.has(SUBTITLE)) {

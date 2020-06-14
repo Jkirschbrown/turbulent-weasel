@@ -12,8 +12,8 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
-import com.example.kirschbrown.popflix.data.MovieContract;
-import com.example.kirschbrown.popflix.data.MovieProvider;
+import com.example.kirschbrown.popflix.Data.MovieContract;
+import com.example.kirschbrown.popflix.Data.MovieProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
